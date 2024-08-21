@@ -1,0 +1,41 @@
+Установка сервера
+
+sudo apt install rabbitmq-server
+sudo systemctl status rabbitmq-server
+sudo rabbitmq-plugins enable rabbitmq_management
+sudo rabbitmqctl add_user admin PaSsWoRd
+sudo rabbitmqctl set_user_tags admin administrator
+sudo rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+
+заходим http://localhost:15672/
+
+----добавляем обменник
+Шаги для добавления telemetry_exchange через веб-интерфейс RabbitMQ:
+Откройте веб-интерфейс RabbitMQ:
+
+Обычно он доступен по адресу http://localhost:15672.
+Войдите в систему с вашим именем пользователя и паролем (по умолчанию: guest/guest).
+Добавление Exchange:
+
+Перейдите на вкладку Exchanges в верхнем меню.
+Нажмите кнопку Add a new exchange (Добавить новый обменник).
+Заполните поля:
+Name: telemetry_exchange (имя вашего обменника).
+Type: Выберите direct (поскольку вы используете ключ маршрутизации).
+Durability: Выберите Durable (чтобы обменник сохранялся при перезапуске сервера RabbitMQ).
+Auto-delete: Оставьте неотмеченным, если не хотите, чтобы обменник удалялся, когда в нем больше нет очередей.
+Нажмите Add exchange.
+
+----добавляем очереди
+Создание очередей и их привязка (если нужно):
+
+Перейдите на вкладку Queues.
+Нажмите Add a new queue и создайте необходимые очереди (например, temperature_queue, ram_queue).
+После создания очередей перейдите обратно на вкладку Exchanges.
+Найдите ваш telemetry_exchange, нажмите на него, и перейдите в раздел Bindings.
+В поле Destination выберите созданную очередь.
+В поле Routing key введите соответствующий ключ маршрутизации (например, temperature.Core 0 для очереди температур и ram.usage для RAM).
+Нажмите Bind.
+
+
+
